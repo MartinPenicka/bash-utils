@@ -1,0 +1,39 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "No argument supplied"
+    exit
+fi
+
+
+if [ $1 = "forbid" ]; then
+
+    grep -v tmp -f forbidden > clr_tmp
+    sed 's/^/127.0.0.1\t/' forbidden > f_tmp
+    sed '/WEBLOCK FORBIDDEN/ r f_tmp' clr_tmp > r_tmp
+    cat r_tmp > tmp
+    rm -f f_tmp r_tmp clr_tmp
+    
+elif [ $1 = "unforbid" ]; then
+
+    grep -v tmp -f forbidden > clr_tmp
+    cat clr_tmp > tmp
+    rm -f clr_tmp
+    
+elif [ $1 = "lock" ]; then
+    
+    grep -v tmp -f locked > clr_tmp
+    sed 's/^/127.0.0.1\t/' locked > f_tmp
+    sed '/WEBLOCK LOCKED/ r f_tmp' clr_tmp > r_tmp
+    cat r_tmp > tmp
+    rm -f f_tmp r_tmp clr_tmp
+    
+elif [ $1 = "unlock" ]; then
+    
+    grep -v tmp -f locked > clr_tmp
+    cat clr_tmp > tmp
+    rm -f clr_tmp
+    
+else
+    echo "bad parameter"
+fi
